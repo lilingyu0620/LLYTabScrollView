@@ -146,12 +146,22 @@
     return cell;
 }
 
-#pragma mark - UIScrollViewDelegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+#pragma mark - UIScrollView Delegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
-//    NSLog(@"offsetY = %f",offsetY);
-    //locate the scrollview which is in the centre
+    [self p_updateTabScrollView:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    [self p_updateTabScrollView:scrollView];
+}
+
+#pragma mark - private method
+
+- (void)p_updateTabScrollView:(UIScrollView *)scrollView{
     
     CGPoint centerPoint = CGPointMake(50 + scrollView.contentOffset.x, scrollView.contentOffset.y);
     NSIndexPath *centerCellIndexPath = [self.mCollectionView indexPathForItemAtPoint:centerPoint];
@@ -161,10 +171,7 @@
         self.currentIndex = (int)centerCellIndexPath.section;
         [self setBtnSelected:self.currentIndex];
     }
-    
 }
-
-
 
 - (void)setBtnSelected:(int)index{
 
